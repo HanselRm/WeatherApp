@@ -15,7 +15,7 @@ namespace WeatherApp.Services
             _httpClient = httpClient;
             _mapper = mapper;
         }
-        public async Task<WeatherViewModel> getWeather(string url, string city, string apiKey)
+        public async Task<WeatherViewModel> getWeather(string url)
         {
             HttpResponseMessage response = await _httpClient.GetAsync(url);
 
