@@ -1,8 +1,59 @@
-﻿@{
+﻿@using WeatherApp.ViewModels;
+@model WeatherViewModel;
+@{
     ViewData["Title"] = "Home Page";
+    Layout = null;
 }
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WeatherApp.styles.css" asp-append-version="true" />
+</head>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<body style="background-color:#5C5B5B; color:white">
+
+    <div class="container">
+        <section class="vh-100">
+            <div class="container py-5 h-100">
+
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-md-8 col-lg-6 col-xl-4 rounded-3" style="background-color:#5C5B5B">
+
+                        <form method="post" asp-controller="Home" asp-action="Index">
+                            <h3 class="mb-4 pb-2 fw-normal">Check the weather forecast</h3>
+
+                            <div class="input-group rounded mb-3">
+
+                                <input type="search" class="form-control rounded" placeholder="City" aria-label="Search"
+                                       aria-describedby="search-addon" asp-for="city"/>
+                                <input type="submit" class="input-group-text border-0 fw-bold" id="search-addon" placeholder="Search">
+                            </div>
+                        </form>
+                            
+                        @if (Model != null)
+                        {
+                            <div class="card shadow-0" style="background-color:#555555; border-color:#616060">
+                                <div class="card-body p-4">
+
+                                    <h4 class="mb-1 sfw-normal">@Model.city</h4>
+                                    <p class="mb-2">Current weather: <strong>@Model.main</strong></p>
+                                    <p>description: <strong>@Model.description</strong></p>
+
+                                    <div class="d-flex flex-row align-items-center">
+                                        <img src="@Model.iconUrl" alt="Weather Icon" />
+                                        <i class="fas fa-cloud fa-3x" style="color: #eee;"></i>
+                                    </div>
+
+                                </div>
+                            </div>
+                        }
+                        
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+</body>
+
+
