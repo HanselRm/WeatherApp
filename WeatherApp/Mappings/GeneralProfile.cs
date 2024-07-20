@@ -8,7 +8,9 @@ namespace WeatherApp.Mappings
     {
         public GeneralProfile()
         {
-            CreateMap<WeatherViewModel, Wather>();
+            CreateMap<WeatherViewModel, Wather>()
+                .ReverseMap()
+                .ForMember(a => a.city, opt => opt.Ignore());
         }
     }
 }
