@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Text.Json;
 using WeatherApp.Models;
 using WeatherApp.ViewModels;
 
@@ -21,16 +23,33 @@ namespace WeatherApp.Services
 
             if(response.IsSuccessStatusCode)
             {
-                string json = await response.Content.ReadAsStringAsync();
-                Wather weather = JsonConvert.DeserializeObject<Wather>(json);
+                string jsonResponse = await response.Content.ReadAsStringAsync();
+                JsonDocument jsonDocument = JsonDocument.Parse(jsonResponse);
 
-                return _mapper.Map<WeatherViewModel>(weather);
+                JsonElement root = jsonDocument.RootElement;
+
+                return _mapper.Map<WeatherViewModel>(getElement(root));
             }
             else
             {
                 throw new Exception($"Error: {response.StatusCode}");
             }
             
+        }
+
+        public Wather getElement(JsonElement json)
+        {
+            JsonElement jsonEl = json.GetProperty("weather")[0];
+
+            Wather weather = new Wather
+            {
+                Id = jsonEl.GetProperty("id").GetInt32(),
+                main = jsonEl.GetProperty("main").GetString(),
+                description = jsonEl.GetProperty("description").GetString(),
+                icon = jsonEl.GetProperty("icon").GetString()
+
+            };
+            return weather;
         }
     }
 }
